@@ -3,63 +3,197 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1f2a37">
-<title>Gastos da Obra</title>
+<meta name="theme-color" content="#05070d">
+<meta name="color-scheme" content="dark">
+<title>Pra Toda Vida</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#f4f5f7;--card:#fff;--tx:#1f2a37;--mut:#6b7280;--pri:#1f5fae;--ok:#1a7f37;--err:#b42318;--warn:#b54708;--bd:#d8dce2}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:72px}
-  header{background:#1f2a37;color:#fff;padding:14px 16px calc(14px) ;position:sticky;top:0;z-index:5}
-  header h1{margin:0;font-size:17px;font-weight:600}
-  header small{color:#c3cad5;display:block;font-size:12px;margin-top:2px}
-  main{max-width:560px;margin:0 auto;padding:12px}
-  .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:12px}
-  label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
-  input,select,textarea{width:100%;font-size:16px;padding:10px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--tx)}
-  textarea{min-height:60px;resize:vertical}
-  .row{display:flex;gap:10px}.row>*{flex:1}
-  button{font-size:16px;border:0;border-radius:8px;padding:12px 14px;cursor:pointer}
-  .btn{background:var(--pri);color:#fff;width:100%;margin-top:14px;font-weight:600}
-  .btn:disabled{opacity:.6}
-  .sec{background:#e8ecf2;color:var(--tx)}
-  nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom)}
-  nav button{flex:1;background:none;border-radius:0;font-size:13px;color:var(--mut);padding:12px 4px}
-  nav button.on{color:var(--pri);font-weight:700;border-top:3px solid var(--pri)}
-  .tab{display:none}.tab.on{display:block}
-  .msg{padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:14px;display:none}
-  .msg.ok{display:block;background:#e7f5ec;color:var(--ok)}
-  .msg.err{display:block;background:#fdecea;color:var(--err)}
-  .msg.warn{display:block;background:#fff4e5;color:var(--warn)}
-  .files{font-size:13px;color:var(--mut);margin-top:6px}
-  .files div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--bd)}
-  .files button{padding:0 6px;background:none;color:var(--err);font-size:14px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{text-align:left;padding:6px 4px;border-bottom:1px solid var(--bd)}
-  td.v,th.v{text-align:right;white-space:nowrap}
-  .kpi{display:flex;gap:10px}.kpi div{flex:1;background:#f0f3f8;border-radius:8px;padding:10px}
-  .kpi b{display:block;font-size:18px}.kpi span{font-size:12px;color:var(--mut)}
-  .fila{font-size:13px;color:var(--warn)}
+  :root{
+    --bg:#05070d; --card:rgba(14,22,42,.72); --card2:rgba(20,32,60,.6);
+    --bd:rgba(0,229,255,.16); --bd2:rgba(0,229,255,.45);
+    --tx:#e6f1ff; --mut:#7f93b3; --neon:#00e5ff; --neon2:#8b5cff;
+    --ok:#00e68a; --err:#ff4d6d; --warn:#ffb020;
+    --fh:'Orbitron',system-ui,sans-serif; --fb:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:var(--fb);color:var(--tx);background:var(--bg);padding-bottom:92px;
+    background-image:
+      radial-gradient(900px 500px at 85% -10%,rgba(139,92,255,.22),transparent 60%),
+      radial-gradient(700px 500px at -10% 20%,rgba(0,229,255,.14),transparent 60%),
+      linear-gradient(rgba(0,229,255,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,229,255,.045) 1px,transparent 1px);
+    background-size:auto,auto,32px 32px,32px 32px;background-attachment:fixed;
+  }
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:20;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;
+    background:rgba(5,7,13,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--neon),var(--neon2),transparent);opacity:.8}
+  .logo{width:38px;height:38px;flex:none}
+  .brand{flex:1;min-width:0}
+  .brand h1{margin:0;font-family:var(--fh);font-weight:800;font-size:17px;letter-spacing:.14em;text-transform:uppercase;
+    background:linear-gradient(90deg,#fff,var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand small{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:11.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);flex:none}
+  .dot.off{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--mut);
+    display:grid;place-items:center;cursor:pointer;flex:none}
+  .icon-btn:active{transform:scale(.94)}
+  /* ---------- layout ---------- */
+  main{max-width:560px;margin:0 auto;padding:14px}
+  .card{position:relative;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:14px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04)}
+  .card::before{content:"";position:absolute;top:-1px;left:18px;width:64px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,var(--neon),var(--neon2));box-shadow:0 0 12px var(--neon)}
+  .ttl{font-family:var(--fh);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--neon);margin:2px 0 6px}
+  label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:14px 0 6px}
+  input,select,textarea{width:100%;font:500 16px var(--fb);padding:12px 13px;border-radius:11px;
+    border:1px solid var(--bd);background:rgba(4,9,20,.75);color:var(--tx);outline:none;transition:border-color .15s,box-shadow .15s;color-scheme:dark}
+  input::placeholder,textarea::placeholder{color:#4f6383}
+  input:focus,select:focus,textarea:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(0,229,255,.15),0 0 18px rgba(0,229,255,.18)}
+  select{appearance:none;-webkit-appearance:none;padding-right:36px;
+    background-image:linear-gradient(45deg,transparent 50%,var(--neon) 50%),linear-gradient(135deg,var(--neon) 50%,transparent 50%);
+    background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+  option{background:#0b1222;color:var(--tx)}
+  textarea{min-height:64px;resize:vertical}
+  .valor{font-family:var(--fh);font-size:20px;letter-spacing:.04em;color:var(--neon)}
+  .row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+  /* ---------- buttons ---------- */
+  .btn{position:relative;width:100%;margin-top:18px;padding:15px 16px;border:0;cursor:pointer;color:#03121a;
+    font:800 14px var(--fh);letter-spacing:.2em;text-transform:uppercase;
+    background:linear-gradient(90deg,var(--neon),var(--neon2));
+    clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+    box-shadow:0 0 24px rgba(0,229,255,.35);transition:filter .15s,transform .08s}
+  .btn::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);
+    transform:translateX(-120%);animation:shine 3.2s ease-in-out infinite}
+  @keyframes shine{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+  .btn:active{transform:scale(.985);filter:brightness(1.15)}
+  .btn:disabled{filter:grayscale(.6) brightness(.7)}
+  .btn:disabled::after{animation:none}
+  .ghost{width:100%;padding:13px;border-radius:11px;border:1px solid var(--bd2);background:rgba(0,229,255,.06);color:var(--neon);
+    font:700 12px var(--fh);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+  .ghost:active{background:rgba(0,229,255,.14)}
+  /* file picker */
+  .drop{display:flex;align-items:center;gap:12px;padding:13px;border:1px dashed var(--bd2);border-radius:12px;background:rgba(0,229,255,.04);cursor:pointer;color:var(--mut);font-size:14px}
+  .drop svg{flex:none;color:var(--neon)}
+  .drop input{display:none}
+  .files{margin-top:8px}
+  .files div{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:var(--tx);padding:8px 10px;margin-top:6px;border-radius:9px;background:var(--card2);border:1px solid var(--bd)}
+  .files span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .files button{border:0;background:none;color:var(--err);font-size:18px;cursor:pointer;padding:0 4px}
+  .hint{font-size:12px;color:var(--mut);margin:10px 0 0;line-height:1.45}
+  /* ---------- tabs / nav ---------- */
+  .tab{display:none;animation:fade .25s ease}.tab.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:20;max-width:536px;margin:0 auto;
+    display:flex;padding:6px;border-radius:18px;background:rgba(8,13,26,.82);border:1px solid var(--bd);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border:0;border-radius:13px;background:none;
+    color:var(--mut);font:600 10.5px var(--fh);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:color .15s,background .15s}
+  nav button.on{color:var(--neon);background:rgba(0,229,255,.09);box-shadow:inset 0 0 0 1px var(--bd2),0 0 18px rgba(0,229,255,.15)}
+  nav button.on svg{filter:drop-shadow(0 0 6px var(--neon))}
+  /* ---------- kpi / table ---------- */
+  .kpi{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px}
+  .kpi div{padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--bd)}
+  .kpi span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+  .kpi b{display:block;margin-top:6px;font:700 17px var(--fh);color:var(--tx);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .kpi div:first-child b{color:var(--neon);text-shadow:0 0 14px rgba(0,229,255,.45)}
+  .kpi b.alert{color:var(--warn)}
+  .lista{margin-top:6px}
+  .item{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid rgba(0,229,255,.08)}
+  .item:last-child{border-bottom:0}
+  .item .id{font:700 11px var(--fh);color:var(--neon2);min-width:34px}
+  .item .tx{flex:1;min-width:0}
+  .item .tx b{display:block;font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .tx small{color:var(--mut);font-size:11.5px}
+  .item .v{font:600 13px var(--fh);white-space:nowrap}
+  .vazio{color:var(--mut);font-size:13px;padding:10px 0}
+  /* ---------- toast / fila ---------- */
+  #toast{position:fixed;left:12px;right:12px;top:calc(76px + env(safe-area-inset-top));z-index:40;max-width:536px;margin:0 auto;
+    padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.4;display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  #toast.ok{display:block;background:rgba(0,230,138,.12);border:1px solid rgba(0,230,138,.5);color:#9dffd2;box-shadow:0 0 22px rgba(0,230,138,.2)}
+  #toast.err{display:block;background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.55);color:#ffc2cd;box-shadow:0 0 22px rgba(255,77,109,.2)}
+  #toast.warn{display:block;background:rgba(255,176,32,.12);border:1px solid rgba(255,176,32,.55);color:#ffe0a3}
+  #fila{display:none;cursor:pointer;border-color:rgba(255,176,32,.45);color:#ffe0a3;font-size:13px}
+  #fila::before{background:var(--warn);box-shadow:0 0 12px var(--warn)}
+  /* ---------- modal ---------- */
+  .modal{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:rgba(2,4,10,.7);backdrop-filter:blur(4px)}
+  .modal.on{display:flex}
+  .modal .card{width:100%;max-width:560px;margin:12px;margin-bottom:calc(12px + env(safe-area-inset-bottom));animation:fade .2s ease}
+  .modal pre{white-space:pre-wrap;font:500 14px/1.55 var(--fb);color:var(--tx);margin:8px 0 0}
+  .modal .row{margin-top:6px}
+  .modal .row .btn,.modal .row .ghost{margin-top:12px}
+  /* ---------- lock screen ---------- */
+  #lock{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px;background:inherit;background-color:var(--bg)}
+  #lock.on{display:flex}
+  #lock .box{width:100%;max-width:380px;text-align:center}
+  #lock .logo{width:84px;height:84px;margin:0 auto 14px;filter:drop-shadow(0 0 22px rgba(0,229,255,.45))}
+  #lock h1{font:800 24px var(--fh);letter-spacing:.18em;text-transform:uppercase;margin:0;
+    background:linear-gradient(90deg,#fff,var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #lock p{color:var(--mut);font-size:13px;margin:8px 0 22px;letter-spacing:.06em}
+  #lock input{text-align:center;font:700 22px var(--fh);letter-spacing:.4em}
+  #lock .err{color:var(--err);font-size:13px;min-height:18px;margin-top:12px}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(3,18,26,.35);border-top-color:#03121a;border-radius:50%;animation:rot .7s linear infinite;vertical-align:-2px;margin-right:8px}
+  @keyframes rot{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#8b5cff"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 64 64">
+      <path d="M32 3 57 17.5v29L32 61 7 46.5v-29z" fill="#071022" stroke="url(#g1)" stroke-width="2.5"/>
+      <path d="M18 40V27l14-9 14 9v13" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M26 40v-8h12v8" fill="none" stroke="#00e5ff" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="32" cy="47" r="2" fill="#00e5ff"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============ TELA DE ACESSO (somente no primeiro uso) ============ -->
+<div id="lock">
+  <form class="box" id="f-lock" autocomplete="off">
+    <svg class="logo"><use href="#logo"/></svg>
+    <h1>Pra Toda Vida</h1>
+    <p>CONTROLE DE GASTOS DA OBRA</p>
+    <input name="pin" type="password" inputmode="text" placeholder="PIN" required autofocus>
+    <button class="btn" type="submit">Acessar</button>
+    <div class="err" id="lock-err"></div>
+  </form>
+</div>
+
 <header>
-  <h1>Gastos da Obra</h1>
-  <small id="sub">Nao configurado</small>
+  <svg class="logo"><use href="#logo"/></svg>
+  <div class="brand">
+    <h1>Pra Toda Vida</h1>
+    <small><i class="dot" id="dot"></i><span id="sub">Gastos da obra</span></small>
+  </div>
+  <button class="icon-btn" id="b-sair" title="Bloquear / trocar PIN" aria-label="Bloquear">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+  </button>
 </header>
 
-<main>
-  <div id="msg" class="msg"></div>
-  <div id="fila" class="card fila" style="display:none"></div>
+<div id="toast"></div>
 
-  <!-- GASTO AVULSO -> aba Lancamentos -->
+<main>
+  <div id="fila" class="card"></div>
+
+  <!-- GASTO -> aba Lancamentos -->
   <section id="t-gasto" class="tab on">
     <form id="f-gasto" class="card" autocomplete="off">
+      <div class="ttl">Novo gasto</div>
       <div class="row">
-        <div><label>Data do pagamento</label><input type="date" name="data" required></div>
-        <div><label>Valor (R$)</label><input name="valor" inputmode="decimal" placeholder="0,00" required></div>
+        <div><label>Data pgto</label><input type="date" name="data" required></div>
+        <div><label>Valor (R$)</label><input class="valor" name="valor" inputmode="decimal" placeholder="0,00" required></div>
       </div>
       <label>Item / descricao</label>
       <input name="item" maxlength="200" placeholder="Ex.: 20 sacos de cimento CP-II" required>
@@ -69,8 +203,12 @@
       </div>
       <label>Observacao</label>
       <textarea name="obs" maxlength="500" placeholder="Fornecedor, NF, forma de pagamento..."></textarea>
-      <label>Comprovante (foto ou PDF)</label>
-      <input type="file" name="arq" accept="image/*,application/pdf" multiple>
+      <label>Comprovante</label>
+      <label class="drop">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Foto ou PDF da nota / recibo</span>
+        <input type="file" name="arq" accept="image/*,application/pdf" multiple>
+      </label>
       <div class="files" data-lista></div>
       <button class="btn" type="submit">Salvar gasto</button>
     </form>
@@ -79,78 +217,99 @@
   <!-- CONTA MENSAL -> aba Recorrentes -->
   <section id="t-rec" class="tab">
     <form id="f-rec" class="card" autocomplete="off">
+      <div class="ttl">Conta mensal</div>
       <div class="row">
-        <div><label>Mes de referencia</label><select name="mes" id="sel-mes"></select></div>
+        <div><label>Mes ref.</label><select name="mes" id="sel-mes"></select></div>
         <div><label>Ano</label><input name="ano" type="number" min="2020" max="2100" required></div>
       </div>
       <div id="itens-rec"></div>
-      <p class="files">Deixe em branco o item que nao quer alterar. Se o mes ja existir na planilha, so os campos preenchidos sao atualizados.</p>
+      <p class="hint">Campo em branco nao altera a planilha. Se o mes ja existir, so os campos preenchidos sao atualizados.</p>
       <label>Pago?</label>
       <select name="pago"><option value="Sim">Sim</option><option value="Nao">Nao</option></select>
       <label>Observacao</label>
       <textarea name="obs" maxlength="500"></textarea>
-      <label>Comprovante (foto ou PDF)</label>
-      <input type="file" name="arq" accept="image/*,application/pdf" multiple>
+      <label>Comprovante</label>
+      <label class="drop">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Foto ou PDF da conta</span>
+        <input type="file" name="arq" accept="image/*,application/pdf" multiple>
+      </label>
       <div class="files" data-lista></div>
-      <button class="btn" type="submit">Salvar conta do mes</button>
+      <button class="btn" type="submit">Salvar conta</button>
     </form>
   </section>
 
   <!-- RESUMO -->
   <section id="t-res" class="tab">
     <div class="card">
+      <div class="ttl">Painel</div>
       <div class="kpi">
-        <div><span>Total lancamentos</span><b id="k-total">-</b></div>
-        <div><span>Qtd</span><b id="k-qtd">-</b></div>
-        <div><span>Sem categoria</span><b id="k-semcat">-</b></div>
+        <div><span>Total lanc.</span><b id="k-total">--</b></div>
+        <div><span>Qtd</span><b id="k-qtd">--</b></div>
+        <div><span>Sem categ.</span><b id="k-semcat">--</b></div>
       </div>
-      <p class="files">Soma apenas da aba Lancamentos (nao inclui Recorrentes). Confira sempre na planilha.</p>
-      <button class="sec" style="width:100%" id="b-atualizar">Atualizar</button>
+      <p class="hint">Soma apenas da aba Lancamentos (nao inclui Recorrentes). Confira sempre na planilha.</p>
+      <button class="ghost" id="b-atualizar" style="margin-top:12px">Atualizar</button>
     </div>
     <div class="card">
-      <b>Ultimos lancamentos</b>
-      <table><thead><tr><th>ID</th><th>Data</th><th>Item</th><th class="v">Valor</th></tr></thead><tbody id="tb-ult"></tbody></table>
-    </div>
-  </section>
-
-  <!-- CONFIG -->
-  <section id="t-cfg" class="tab">
-    <form id="f-cfg" class="card">
-      <label>URL do App da Web (Apps Script)</label>
-      <input name="url" placeholder="https://script.google.com/macros/s/.../exec" required>
-      <label>PIN</label>
-      <input name="pin" type="password" required>
-      <button class="btn" type="submit">Salvar e testar conexao</button>
-      <p class="files">URL e PIN ficam salvos somente neste aparelho. Nao vao para o GitHub.</p>
-    </form>
-    <div class="card">
-      <button class="sec" style="width:100%" id="b-enviar-fila">Reenviar pendentes agora</button>
-      <button class="sec" style="width:100%;margin-top:8px" id="b-sair">Apagar configuracao deste aparelho</button>
+      <div class="ttl">Ultimos lancamentos</div>
+      <div class="lista" id="lst-ult"><div class="vazio">Sem dados.</div></div>
     </div>
   </section>
 </main>
 
 <nav>
-  <button data-t="t-gasto" class="on">Gasto</button>
-  <button data-t="t-rec">Conta mensal</button>
-  <button data-t="t-res">Resumo</button>
-  <button data-t="t-cfg">Config</button>
+  <button data-t="t-gasto" class="on">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/><rect x="2.5" y="2.5" width="19" height="19" rx="5"/></svg>
+    Gasto
+  </button>
+  <button data-t="t-rec">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Mensal
+  </button>
+  <button data-t="t-res">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+    Resumo
+  </button>
 </nav>
+
+<!-- modal de confirmacao -->
+<div class="modal" id="modal">
+  <div class="card">
+    <div class="ttl" id="m-ttl">Confirmar</div>
+    <pre id="m-txt"></pre>
+    <div class="row">
+      <button class="ghost" id="m-nao" type="button">Cancelar</button>
+      <button class="btn" id="m-sim" type="button">Confirmar</button>
+    </div>
+  </div>
+</div>
 
 <script>
 (() => {
-  const LS = { cfg: 'go_cfg', meta: 'go_meta', fila: 'go_fila' };
+  // =====================================================================
+  //  URL do App da Web (Apps Script) - termina em /exec
+  //  Para trocar: edite somente a linha abaixo.
+  // =====================================================================
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyo7K5duzD9ttA6sZRnLwPaoLwvPEpY_VH-vJJwu_mkL0lO5Zr4TRNLAjMnceNHBI4/exec';
+
+  const LS = { pin: 'ptv_pin', meta: 'ptv_meta', fila: 'ptv_fila' };
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const store = {
-    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
     del(k) { try { localStorage.removeItem(k); } catch {} },
   };
+  // migra configuracao da versao anterior do app
+  (() => { const old = store.get('go_cfg', null); if (old && old.pin && !store.get(LS.pin, null)) store.set(LS.pin, old.pin);
+           const f = store.get('go_fila', null); if (f && f.length && !store.get(LS.fila, null)) store.set(LS.fila, f);
+           ['go_cfg', 'go_meta', 'go_fila'].forEach(store.del); })();
+
   const brl = (n) => Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const hojeISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+  const dataBR = (s) => String(s).split('-').reverse().join('/');
 
-  // "1.234,56" / "1234,56" / "1234.56" -> 1234.56
   function parseValor(s) {
     s = String(s || '').trim().replace(/[R$\s]/g, '');
     if (!s) return NaN;
@@ -159,28 +318,73 @@
     return Number(s);
   }
 
+  let toastT;
   function msg(t, tipo = 'ok') {
-    const m = $('#msg'); m.className = 'msg ' + tipo; m.textContent = t;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (tipo === 'ok') setTimeout(() => { if (m.textContent === t) m.className = 'msg'; }, 6000);
+    const m = $('#toast'); m.className = tipo; m.textContent = t;
+    clearTimeout(toastT);
+    toastT = setTimeout(() => { m.className = ''; }, tipo === 'ok' ? 5000 : 9000);
+  }
+  $('#toast').onclick = () => { $('#toast').className = ''; };
+
+  function confirmar(titulo, texto, ok = 'Confirmar') {
+    return new Promise((res) => {
+      $('#m-ttl').textContent = titulo; $('#m-txt').textContent = texto; $('#m-sim').textContent = ok;
+      const md = $('#modal'); md.classList.add('on');
+      const fim = (v) => { md.classList.remove('on'); $('#m-sim').onclick = $('#m-nao').onclick = null; res(v); };
+      $('#m-sim').onclick = () => fim(true); $('#m-nao').onclick = () => fim(false);
+    });
   }
 
   // ---------- comunicacao ----------
-  async function api(acao, dados) {
-    const cfg = store.get(LS.cfg, null);
-    if (!cfg) throw new Error('Configure a URL e o PIN na aba Config.');
-    const r = await fetch(cfg.url, {
+  async function api(acao, dados, pinOverride) {
+    if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(SCRIPT_URL)) {
+      const e = new Error('URL do Apps Script nao configurada no app (index.html).'); e.servidor = true; throw e;
+    }
+    const pin = pinOverride ?? store.get(LS.pin, '');
+    const r = await fetch(SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS
-      body: JSON.stringify({ pin: cfg.pin, acao, dados }),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ pin, acao, dados }),
     });
     const j = await r.json();
-    if (!j.ok) { const e = new Error(j.erro || 'Erro'); e.servidor = true; throw e; }
+    if (!j.ok) {
+      const e = new Error(j.erro || 'Erro'); e.servidor = true; e.codigo = j.codigo;
+      if (j.codigo === 'PIN' && !pinOverride) bloquear('PIN alterado ou invalido. Digite o PIN atual.');
+      throw e;
+    }
     return j;
   }
 
+  // ---------- tela de acesso ----------
+  function bloquear(texto = '') {
+    store.del(LS.pin);
+    $('#lock-err').textContent = texto;
+    $('#lock').classList.add('on');
+    setTimeout(() => $('#f-lock').pin.focus(), 50);
+  }
+  $('#f-lock').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const f = ev.target, btn = $('button', f), pin = f.pin.value.trim();
+    if (!pin) return;
+    btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Validando';
+    $('#lock-err').textContent = '';
+    try {
+      const j = await api('config', null, pin);
+      store.set(LS.pin, pin);
+      store.set(LS.meta, j.config); aplicarMeta(j.config); renderResumo(j.resumo);
+      f.reset(); $('#lock').classList.remove('on');
+      msg('Acesso liberado.'); enviarFila();
+    } catch (e) {
+      $('#lock-err').textContent = e.servidor ? e.message : 'Sem conexao. Conecte-se a internet para o primeiro acesso.';
+    } finally { btn.disabled = false; btn.textContent = 'Acessar'; }
+  });
+  $('#b-sair').onclick = async () => {
+    const q = fila().length;
+    if (await confirmar('Bloquear app', 'O PIN sera apagado deste aparelho e sera pedido de novo no proximo acesso.' + (q ? '\n\nHa ' + q + ' registro(s) pendente(s) de envio: eles continuam guardados.' : ''), 'Bloquear')) bloquear();
+  };
+
   // ---------- arquivos ----------
-  const anexos = new WeakMap(); // form -> [{nome,tipo,base64}]
+  const anexos = new WeakMap();
   async function lerArquivo(f) {
     if (f.type.startsWith('image/') && f.type !== 'image/gif') return comprimirImagem(f);
     if (f.size > 10 * 1024 * 1024) throw new Error('PDF acima de 10 MB: ' + f.name);
@@ -194,71 +398,66 @@
       const max = 1800, k = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      const b64 = c.toDataURL('image/jpeg', 0.75).split(',')[1];
-      return { nome: f.name.replace(/\.[^.]+$/, '') + '.jpg', tipo: 'image/jpeg', base64: b64 };
+      return { nome: f.name.replace(/\.[^.]+$/, '') + '.jpg', tipo: 'image/jpeg', base64: c.toDataURL('image/jpeg', 0.75).split(',')[1] };
     } finally { URL.revokeObjectURL(url); }
   }
   function renderAnexos(form) {
-    const lista = anexos.get(form) || [];
-    const box = $('[data-lista]', form);
+    const lista = anexos.get(form) || [], box = $('[data-lista]', form);
     box.innerHTML = '';
     lista.forEach((a, i) => {
       const d = document.createElement('div');
-      d.innerHTML = '<span></span><button type="button" title="Remover">x</button>';
-      d.firstChild.textContent = a.nome + ' (' + Math.round(a.base64.length * 0.75 / 1024) + ' KB)';
+      d.innerHTML = '<span></span><button type="button" aria-label="Remover">&times;</button>';
+      d.firstChild.textContent = a.nome + '  ·  ' + Math.round(a.base64.length * 0.75 / 1024) + ' KB';
       d.lastChild.onclick = () => { lista.splice(i, 1); renderAnexos(form); };
       box.appendChild(d);
     });
   }
   $$('input[type=file]').forEach((inp) => inp.addEventListener('change', async () => {
     const form = inp.form, lista = anexos.get(form) || [];
-    try { for (const f of inp.files) lista.push(await lerArquivo(f)); }
-    catch (e) { msg(e.message, 'err'); }
+    try { for (const f of inp.files) lista.push(await lerArquivo(f)); } catch (e) { msg(e.message, 'err'); }
     anexos.set(form, lista); inp.value = ''; renderAnexos(form);
   }));
 
   // ---------- fila offline ----------
-  function fila() { return store.get(LS.fila, []); }
+  const fila = () => store.get(LS.fila, []);
   function renderFila() {
     const q = fila(), el = $('#fila');
     el.style.display = q.length ? 'block' : 'none';
-    el.textContent = q.length + ' registro(s) aguardando envio (sem conexao no momento do salvamento). Serao reenviados automaticamente.';
+    el.textContent = q.length + ' registro(s) aguardando envio. Toque aqui para reenviar agora.';
   }
+  $('#fila').onclick = () => enviarFila(true);
   function enfileirar(acao, dados) {
     const q = fila(); q.push({ acao, dados, em: new Date().toISOString() });
-    const ok = store.set(LS.fila, q);
-    renderFila();
-    return ok;
+    const ok = store.set(LS.fila, q); renderFila(); return ok;
   }
   let enviandoFila = false;
-  async function enviarFila() {
-    if (enviandoFila || !navigator.onLine) return;
+  async function enviarFila(manual) {
+    if (enviandoFila || !store.get(LS.pin, null)) return;
     enviandoFila = true;
     let q = fila(), enviados = 0;
     try {
       while (q.length) {
         try { await api(q[0].acao, q[0].dados); }
         catch (e) {
-          if (e.servidor) { msg('Registro pendente recusado pela planilha: ' + e.message + ' (removido da fila).', 'err'); }
-          else break; // ainda sem rede
+          if (e.codigo === 'PIN' || e.codigo === 'BLOQUEIO' || !e.servidor) { if (manual && !e.servidor) msg('Ainda sem conexao.', 'warn'); break; }
+          msg('Registro pendente recusado pela planilha: ' + e.message + ' (removido da fila).', 'err');
         }
         q.shift(); store.set(LS.fila, q); enviados++;
       }
     } finally { enviandoFila = false; renderFila(); }
     if (enviados) { msg(enviados + ' registro(s) pendente(s) processado(s).'); carregarResumo(); }
   }
-  window.addEventListener('online', enviarFila);
+  window.addEventListener('online', () => { status(); enviarFila(); });
+  window.addEventListener('offline', status);
+  function status() { $('#dot').classList.toggle('off', !navigator.onLine); }
 
   async function enviar(acao, dados, form, resetar) {
-    const btn = $('button[type=submit]', form);
-    btn.disabled = true; const txt = btn.textContent; btn.textContent = 'Salvando...';
-    try {
-      const r = await api(acao, dados);
-      resetar();
-      return r;
-    } catch (e) {
-      if (e.servidor) { msg(e.message, 'err'); return null; }
-      if (enfileirar(acao, dados)) { resetar(); msg('Sem conexao. Registro guardado neste aparelho e sera enviado quando a rede voltar.', 'warn'); }
+    const btn = $('button[type=submit]', form), txt = btn.textContent;
+    btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Salvando';
+    try { const r = await api(acao, dados); resetar(); return r; }
+    catch (e) {
+      if (e.servidor) { if (e.codigo !== 'PIN') msg(e.message, 'err'); return null; }
+      if (enfileirar(acao, dados)) { resetar(); msg('Sem conexao. Registro guardado no aparelho e sera enviado quando a rede voltar.', 'warn'); }
       else msg('Sem conexao e sem espaco para guardar offline (anexos grandes). Tente novamente com rede.', 'err');
       return null;
     } finally { btn.disabled = false; btn.textContent = txt; }
@@ -271,13 +470,16 @@
     const fd = new FormData(fG), valor = parseValor(fd.get('valor'));
     if (!(valor > 0)) return msg('Valor invalido.', 'err');
     const dados = { data: fd.get('data'), item: fd.get('item').trim(), categoria: fd.get('categoria'), tipo: fd.get('tipo'), valor, obs: fd.get('obs').trim(), arquivos: anexos.get(fG) || [] };
-    if (!confirm('Confirmar gasto?\n\n' + dados.item + '\n' + brl(valor) + ' em ' + dados.data.split('-').reverse().join('/'))) return;
+    const ok = await confirmar('Confirmar gasto',
+      dados.item + '\n' + brl(valor) + '  ·  ' + dataBR(dados.data) + '\n' + dados.categoria + '  ·  ' + dados.tipo +
+      (dados.arquivos.length ? '\n' + dados.arquivos.length + ' comprovante(s)' : '\nSem comprovante'), 'Salvar');
+    if (!ok) return;
     const r = await enviar('lancamento', dados, fG, () => {
       const cat = fG.categoria.value, tipo = fG.tipo.value, data = fG.data.value;
       fG.reset(); fG.categoria.value = cat; fG.tipo.value = tipo; fG.data.value = data;
       anexos.set(fG, []); renderAnexos(fG);
     });
-    if (r) { msg('Gasto salvo. ID ' + r.id + ' (linha ' + r.linha + ')' + (r.comprovantes ? ', ' + r.comprovantes + ' comprovante(s) no Drive.' : '.')); carregarResumo(); }
+    if (r) { msg('Gasto salvo. ID ' + r.id + ' (linha ' + r.linha + ')' + (r.comprovantes ? ' · ' + r.comprovantes + ' comprovante(s) no Drive.' : '.')); carregarResumo(); }
   });
 
   const fR = $('#f-rec');
@@ -293,28 +495,28 @@
     const dados = { mes: fd.get('mes'), ano: Number(fd.get('ano')), valores, pago: fd.get('pago'), obs: fd.get('obs').trim(), arquivos: anexos.get(fR) || [] };
     if (!Object.keys(valores).length && !dados.arquivos.length && !dados.obs) return msg('Preencha pelo menos um valor.', 'err');
     const resumo = Object.entries(valores).map(([k, v]) => k + ': ' + brl(v)).join('\n');
-    if (!confirm('Confirmar ' + dados.mes + '/' + dados.ano + '?\n\n' + (resumo || '(sem valores)') + '\nPago: ' + dados.pago)) return;
+    if (!await confirmar('Confirmar ' + dados.mes + '/' + dados.ano, (resumo || '(sem valores)') + '\nPago: ' + dados.pago, 'Salvar')) return;
     const r = await enviar('recorrente', dados, fR, () => {
       const m = fR.mes.value, a = fR.ano.value; fR.reset(); fR.mes.value = m; fR.ano.value = a; anexos.set(fR, []); renderAnexos(fR);
     });
-    if (r) msg((r.novo ? 'Mes criado' : 'Mes atualizado') + ' na linha ' + r.linha + '. ' + (r.alterados.join(', ') || '') + (r.comprovantes ? ' | ' + r.comprovantes + ' comprovante(s).' : ''));
+    if (r) msg((r.novo ? 'Mes criado' : 'Mes atualizado') + ' na linha ' + r.linha + '. ' + (r.alterados.join(', ') || '') + (r.comprovantes ? ' · ' + r.comprovantes + ' comprovante(s).' : ''));
   });
 
-  // ---------- config / metadados ----------
+  // ---------- metadados / resumo ----------
   function aplicarMeta(meta) {
     const cats = meta?.categorias || ['Material', 'Mao de obra', 'Frete/Carreto', 'Taxas/Projeto', 'Alimentacao', 'Servicos', 'A classificar'];
     const tipos = meta?.tipos || ['Realizado', 'Provisao'];
     const meses = meta?.meses || ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     const itens = meta?.itensRecorrentes || ['Condominio', 'Agua (Embasa)', 'Luz (Coelba)'];
-    const opt = (sel, arr) => { const v = sel.value; sel.innerHTML = arr.map((x) => '<option></option>').join(''); [...sel.options].forEach((o, i) => { o.value = o.textContent = arr[i]; }); if (arr.includes(v)) sel.value = v; };
+    const opt = (sel, arr) => { const v = sel.value; sel.innerHTML = ''; arr.forEach((x) => { const o = document.createElement('option'); o.value = o.textContent = x; sel.appendChild(o); }); if (arr.includes(v)) sel.value = v; };
     opt($('#sel-cat'), cats); opt($('#sel-tipo'), tipos); opt($('#sel-mes'), meses);
     const box = $('#itens-rec'); box.innerHTML = '';
     itens.forEach((it) => {
       const l = document.createElement('label'); l.textContent = it + ' (R$)';
-      const i = document.createElement('input'); i.inputMode = 'decimal'; i.placeholder = 'em branco = nao altera'; i.dataset.item = it;
+      const i = document.createElement('input'); i.className = 'valor'; i.inputMode = 'decimal'; i.placeholder = '0,00'; i.dataset.item = it;
       box.append(l, i);
     });
-    $('#sub').textContent = meta?.planilha ? 'Planilha: ' + meta.planilha : (store.get(LS.cfg) ? 'Configurado' : 'Nao configurado - abra Config');
+    $('#sub').textContent = meta?.planilha ? meta.planilha : 'Gastos da obra';
   }
 
   function renderResumo(r) {
@@ -322,11 +524,17 @@
     $('#k-total').textContent = brl(r.totalLancamentos);
     $('#k-qtd').textContent = r.qtdLancamentos;
     $('#k-semcat').textContent = r.semCategoria;
-    const tb = $('#tb-ult'); tb.innerHTML = '';
+    $('#k-semcat').classList.toggle('alert', r.semCategoria > 0);
+    const box = $('#lst-ult'); box.innerHTML = '';
+    if (!r.ultimos.length) { box.innerHTML = '<div class="vazio">Nenhum lancamento.</div>'; return; }
     r.ultimos.forEach((u) => {
-      const tr = document.createElement('tr');
-      [u.id, String(u.data).split('-').reverse().join('/'), u.item, brl(u.valor)].forEach((v, i) => { const td = document.createElement('td'); td.textContent = v; if (i === 3) td.className = 'v'; tr.appendChild(td); });
-      tb.appendChild(tr);
+      const d = document.createElement('div'); d.className = 'item';
+      d.innerHTML = '<span class="id"></span><div class="tx"><b></b><small></small></div><span class="v"></span>';
+      d.querySelector('.id').textContent = '#' + u.id;
+      d.querySelector('b').textContent = u.item;
+      d.querySelector('small').textContent = dataBR(u.data) + (u.categoria ? '  ·  ' + u.categoria : '  ·  sem categoria');
+      d.querySelector('.v').textContent = brl(u.valor);
+      box.appendChild(d);
     });
   }
 
@@ -334,39 +542,28 @@
     const j = await api('config');
     store.set(LS.meta, j.config); aplicarMeta(j.config); renderResumo(j.resumo);
   }
-  async function carregarResumo() {
-    try { const j = await api('resumo'); renderResumo(j.resumo); } catch {}
+  async function carregarResumo(avisar) {
+    try { const j = await api('resumo'); renderResumo(j.resumo); if (avisar) msg('Painel atualizado.'); }
+    catch (e) { if (avisar && e.codigo !== 'PIN') msg(e.servidor ? e.message : 'Sem conexao para atualizar o painel.', e.servidor ? 'err' : 'warn'); }
   }
-
-  const fC = $('#f-cfg');
-  fC.addEventListener('submit', async (ev) => {
-    ev.preventDefault();
-    const url = fC.url.value.trim(), pin = fC.pin.value;
-    if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url)) return msg('URL deve terminar em /exec (App da Web publicado).', 'err');
-    store.set(LS.cfg, { url, pin });
-    try { await carregarConfig(); msg('Conectado.'); enviarFila(); }
-    catch (e) { msg('Falha ao conectar: ' + e.message, 'err'); }
-  });
-  $('#b-sair').onclick = () => { if (confirm('Apagar URL, PIN e pendentes deste aparelho?')) { Object.values(LS).forEach(store.del); location.reload(); } };
-  $('#b-enviar-fila').onclick = enviarFila;
-  $('#b-atualizar').onclick = () => carregarResumo();
+  $('#b-atualizar').onclick = () => carregarResumo(true);
 
   // ---------- navegacao ----------
   $$('nav button').forEach((b) => b.onclick = () => {
     $$('nav button').forEach((x) => x.classList.toggle('on', x === b));
     $$('.tab').forEach((t) => t.classList.toggle('on', t.id === b.dataset.t));
+    window.scrollTo({ top: 0 });
     if (b.dataset.t === 't-res') carregarResumo();
   });
 
   // ---------- inicio ----------
   fG.data.value = hojeISO();
-  const d = new Date(); fR.ano.value = d.getFullYear();
+  const hoje = new Date(); fR.ano.value = hoje.getFullYear();
   aplicarMeta(store.get(LS.meta, null));
-  $('#sel-mes').selectedIndex = d.getMonth();
-  const cfg = store.get(LS.cfg, null);
-  if (cfg) { fC.url.value = cfg.url; fC.pin.value = cfg.pin; carregarConfig().catch(() => {}); enviarFila(); }
-  else $('nav button[data-t=t-cfg]').click();
-  renderFila();
+  $('#sel-mes').selectedIndex = hoje.getMonth();
+  status(); renderFila();
+  if (store.get(LS.pin, null)) { carregarConfig().catch(() => {}); enviarFila(); }
+  else bloquear();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 </script>
