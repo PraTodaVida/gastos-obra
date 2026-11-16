@@ -7,8 +7,12 @@
 <meta name="color-scheme" content="dark">
 <title>Pra Toda Vida</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pra Toda Vida">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -37,7 +41,9 @@
     border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px}
   header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
     background:linear-gradient(90deg,transparent,var(--neon),var(--neon2),transparent);opacity:.8}
-  .logo{width:38px;height:38px;flex:none}
+  .hmark{height:30px;width:auto;flex:none;filter:drop-shadow(0 0 8px rgba(0,229,255,.35))}
+  .hword{height:20px;width:auto;display:block;max-width:100%}
+  .icon-btn.inst{color:#03121a;border:0;background:linear-gradient(135deg,var(--neon),var(--neon2));box-shadow:0 0 16px rgba(0,229,255,.45)}
   .brand{flex:1;min-width:0}
   .brand h1{margin:0;font-family:var(--fh);font-weight:800;font-size:17px;letter-spacing:.14em;text-transform:uppercase;
     background:linear-gradient(90deg,#fff,var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -116,6 +122,20 @@
   .item .tx small{color:var(--mut);font-size:11.5px}
   .item .v{font:600 13px var(--fh);white-space:nowrap}
   .vazio{color:var(--mut);font-size:13px;padding:10px 0}
+  .kpi2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .kpi2 div{padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--bd)}
+  .kpi2 span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+  .kpi2 b{display:block;margin-top:6px;font:700 15px var(--fh);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .prev-preco{margin:6px 0 4px;font:800 30px var(--fh);color:var(--neon);text-shadow:0 0 18px rgba(0,229,255,.5);font-variant-numeric:tabular-nums}
+  .linhas{margin-top:8px}
+  .linhas div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,229,255,.08);font-size:13.5px}
+  .linhas div:last-child{border-bottom:0}
+  .linhas span{color:var(--mut)} .linhas b{font:600 13.5px var(--fh);font-variant-numeric:tabular-nums}
+  .pos{color:var(--ok)!important} .neg{color:var(--err)!important} .wrn{color:var(--warn)!important}
+  .aviso{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,176,32,.35);background:rgba(255,176,32,.07);color:#ffe0a3;font-size:12px;line-height:1.45}
+  .busca{margin-top:6px}
+  .item a{color:var(--neon);font-size:11px;text-decoration:none;border:1px solid var(--bd2);border-radius:6px;padding:2px 6px;margin-left:6px}
+  .cnt{float:right;color:var(--mut);font:600 11px var(--fh);letter-spacing:.1em}
   /* ---------- toast / fila ---------- */
   #toast{position:fixed;left:12px;right:12px;top:calc(76px + env(safe-area-inset-top));z-index:40;max-width:536px;margin:0 auto;
     padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.4;display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
@@ -135,9 +155,8 @@
   #lock{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px;background:inherit;background-color:var(--bg)}
   #lock.on{display:flex}
   #lock .box{width:100%;max-width:380px;text-align:center}
-  #lock .logo{width:84px;height:84px;margin:0 auto 14px;filter:drop-shadow(0 0 22px rgba(0,229,255,.45))}
-  #lock h1{font:800 24px var(--fh);letter-spacing:.18em;text-transform:uppercase;margin:0;
-    background:linear-gradient(90deg,#fff,var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #lock .lock-mark{width:190px;max-width:70%;display:block;margin:0 auto 18px;filter:drop-shadow(0 0 26px rgba(0,229,255,.4))}
+  #lock .lock-word{width:300px;max-width:90%;display:block;margin:0 auto}
   #lock p{color:var(--mut);font-size:13px;margin:8px 0 22px;letter-spacing:.06em}
   #lock input{text-align:center;font:700 22px var(--fh);letter-spacing:.4em}
   #lock .err{color:var(--err);font-size:13px;min-height:18px;margin-top:12px}
@@ -147,23 +166,13 @@
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset="1" stop-color="#8b5cff"/></linearGradient>
-    <symbol id="logo" viewBox="0 0 64 64">
-      <path d="M32 3 57 17.5v29L32 61 7 46.5v-29z" fill="#071022" stroke="url(#g1)" stroke-width="2.5"/>
-      <path d="M18 40V27l14-9 14 9v13" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-      <path d="M26 40v-8h12v8" fill="none" stroke="#00e5ff" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="32" cy="47" r="2" fill="#00e5ff"/>
-    </symbol>
-  </defs>
-</svg>
+
 
 <!-- ============ TELA DE ACESSO (somente no primeiro uso) ============ -->
 <div id="lock">
   <form class="box" id="f-lock" autocomplete="off">
-    <svg class="logo"><use href="#logo"/></svg>
-    <h1>Pra Toda Vida</h1>
+    <img class="lock-mark" src="logo-mark.png" alt="">
+    <img class="lock-word" src="logo-word.png" alt="Pra Toda Vida">
     <p>CONTROLE DE GASTOS DA OBRA</p>
     <input name="pin" type="password" inputmode="text" placeholder="PIN" required autofocus>
     <button class="btn" type="submit">Acessar</button>
@@ -172,11 +181,14 @@
 </div>
 
 <header>
-  <svg class="logo"><use href="#logo"/></svg>
+  <img class="hmark" src="logo-mark.png" alt="">
   <div class="brand">
-    <h1>Pra Toda Vida</h1>
+    <h1><img class="hword" src="logo-word.png" alt="Pra Toda Vida"></h1>
     <small><i class="dot" id="dot"></i><span id="sub">Gastos da obra</span></small>
   </div>
+  <button class="icon-btn inst" id="b-instalar" title="Instalar app" aria-label="Instalar app" hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+  </button>
   <button class="icon-btn" id="b-sair" title="Bloquear / trocar PIN" aria-label="Bloquear">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
   </button>
@@ -244,15 +256,41 @@
     <div class="card">
       <div class="ttl">Painel</div>
       <div class="kpi">
-        <div><span>Total lanc.</span><b id="k-total">--</b></div>
+        <div><span>Custo da obra</span><b id="k-custo">--</b></div>
         <div><span>Qtd</span><b id="k-qtd">--</b></div>
         <div><span>Sem categ.</span><b id="k-semcat">--</b></div>
       </div>
-      <p class="hint">Soma apenas da aba Lancamentos (nao inclui Recorrentes). Confira sempre na planilha.</p>
+      <div class="kpi2">
+        <div><span>Lancamentos</span><b id="k-total">--</b></div>
+        <div><span>Recorrentes pagos</span><b id="k-rec">--</b></div>
+      </div>
+      <p class="hint" id="k-prov-txt">Custo da obra = lancamentos (sem provisoes) + recorrentes pagos.</p>
       <button class="ghost" id="b-atualizar" style="margin-top:12px">Atualizar</button>
     </div>
+
     <div class="card">
-      <div class="ttl">Ultimos lancamentos</div>
+      <div class="ttl" id="p-ttl">Previsao de venda</div>
+      <div class="hint" style="margin:0">Preco de venda para a margem alvo</div>
+      <div class="prev-preco" id="p-preco">--</div>
+      <div class="linhas">
+        <div><span>Custo da obra</span><b id="p-custo">--</b></div>
+        <div><span id="p-com-l">Comissao</span><b id="p-com">--</b></div>
+        <div><span>Lucro previsto</span><b class="pos" id="p-lucro">--</b></div>
+        <div><span>Lucro sobre o custo</span><b id="p-lsc">--</b></div>
+      </div>
+      <div class="ttl" style="margin-top:16px">Comparativo: valor de mercado</div>
+      <div class="linhas">
+        <div><span>Valor de mercado</span><b id="m-valor">--</b></div>
+        <div><span>Lucro no valor de mercado</span><b id="m-lucro">--</b></div>
+        <div><span>Margem no valor de mercado</span><b id="m-margem">--</b></div>
+        <div><span>Diferenca para a margem alvo</span><b id="m-dif">--</b></div>
+      </div>
+      <div class="aviso">Insumo para decisao, nao recomendacao de preco. Impostos sobre a venda NAO incluidos. O preco alvo sobe a cada gasto lancado. Confira antes de usar.</div>
+    </div>
+
+    <div class="card">
+      <div class="ttl">Todos os lancamentos <span class="cnt" id="l-cnt"></span></div>
+      <input class="busca" id="l-busca" placeholder="Buscar item, categoria ou ID..." autocomplete="off">
       <div class="lista" id="lst-ult"><div class="vazio">Sem dados.</div></div>
     </div>
   </section>
@@ -519,24 +557,76 @@
     $('#sub').textContent = meta?.planilha ? meta.planilha : 'Gastos da obra';
   }
 
+  const pct = (x) => (x * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+  let todos = [];
   function renderResumo(r) {
     if (!r) return;
+    const custo = r.custoBase ?? r.totalLancamentos;
+    $('#k-custo').textContent = brl(custo);
     $('#k-total').textContent = brl(r.totalLancamentos);
+    $('#k-rec').textContent = brl(r.recorrentesPagos || 0);
     $('#k-qtd').textContent = r.qtdLancamentos;
     $('#k-semcat').textContent = r.semCategoria;
     $('#k-semcat').classList.toggle('alert', r.semCategoria > 0);
+    $('#k-prov-txt').textContent = 'Custo da obra = lancamentos (sem provisoes) + recorrentes pagos.' +
+      (r.provisoes ? ' Provisoes fora do custo: ' + brl(r.provisoes) + '.' : '');
+
+    // previsao de venda: margem sobre o preco, comissao deduzida do preco
+    const pv = r.previsao;
+    if (pv) {
+      const preco = custo / (1 - pv.margem - pv.comissao), com = preco * pv.comissao, lucro = preco - com - custo;
+      $('#p-ttl').textContent = 'Previsao de venda - margem ' + pct(pv.margem);
+      $('#p-preco').textContent = brl(preco);
+      $('#p-custo').textContent = brl(custo);
+      $('#p-com-l').textContent = 'Comissao (' + pct(pv.comissao) + ')';
+      $('#p-com').textContent = brl(com);
+      $('#p-lucro').textContent = brl(lucro);
+      $('#p-lsc').textContent = custo ? pct(lucro / custo) : '--';
+      const vm = pv.valorMercado, lm = vm - vm * pv.comissao - custo, mm = vm ? lm / vm : 0;
+      $('#m-valor').textContent = brl(vm);
+      $('#m-lucro').textContent = brl(lm); $('#m-lucro').className = lm >= 0 ? 'pos' : 'neg';
+      $('#m-margem').textContent = pct(mm); $('#m-margem').className = mm >= pv.margem ? 'pos' : 'wrn';
+      const dif = preco - vm;
+      $('#m-dif').textContent = (dif > 0 ? 'faltam ' : 'sobram ') + brl(Math.abs(dif)); $('#m-dif').className = dif > 0 ? 'wrn' : 'pos';
+    }
+    todos = r.lancamentos || r.ultimos || [];
+    renderLista();
+  }
+  function renderLista() {
+    const q = $('#l-busca').value.trim().toLowerCase();
+    const lista = q ? todos.filter((u) => [u.id, u.item, u.categoria, u.tipo, u.obs, dataBR(u.data)].join(' ').toLowerCase().includes(q)) : todos;
+    const soma = lista.reduce((s, u) => s + (Number(u.valor) || 0), 0);
+    $('#l-cnt').textContent = lista.length + ' · ' + brl(soma);
     const box = $('#lst-ult'); box.innerHTML = '';
-    if (!r.ultimos.length) { box.innerHTML = '<div class="vazio">Nenhum lancamento.</div>'; return; }
-    r.ultimos.forEach((u) => {
+    if (!lista.length) { box.innerHTML = '<div class="vazio">Nenhum lancamento.</div>'; return; }
+    lista.forEach((u) => {
       const d = document.createElement('div'); d.className = 'item';
       d.innerHTML = '<span class="id"></span><div class="tx"><b></b><small></small></div><span class="v"></span>';
       d.querySelector('.id').textContent = '#' + u.id;
       d.querySelector('b').textContent = u.item;
-      d.querySelector('small').textContent = dataBR(u.data) + (u.categoria ? '  ·  ' + u.categoria : '  ·  sem categoria');
+      const sm = d.querySelector('small');
+      sm.textContent = dataBR(u.data) + '  ·  ' + (u.categoria || 'sem categoria') + (String(u.tipo).toLowerCase() === 'provisao' ? '  ·  provisao' : '');
+      if (/^https:\/\/(drive|docs)\.google\.com\//.test(u.comprovante || '')) {
+        const a = document.createElement('a'); a.href = u.comprovante; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'comprovante'; sm.appendChild(a);
+      }
       d.querySelector('.v').textContent = brl(u.valor);
       box.appendChild(d);
     });
   }
+  $('#l-busca').addEventListener('input', renderLista);
+
+  // ---------- instalar no celular ----------
+  let promptInstalar = null;
+  const instalado = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const ehIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); promptInstalar = e; if (!instalado()) $('#b-instalar').hidden = false; });
+  window.addEventListener('appinstalled', () => { $('#b-instalar').hidden = true; msg('App instalado na tela inicial.'); });
+  if (ehIOS && !instalado()) $('#b-instalar').hidden = false;
+  $('#b-instalar').onclick = async () => {
+    if (promptInstalar) { promptInstalar.prompt(); const r = await promptInstalar.userChoice; promptInstalar = null; if (r.outcome === 'accepted') $('#b-instalar').hidden = true; return; }
+    if (ehIOS) { await confirmar('Instalar no iPhone', '1. Abra este link no Safari.\n2. Toque no botao Compartilhar (quadrado com seta para cima).\n3. Toque em "Adicionar a Tela de Inicio".\n4. Toque em "Adicionar".', 'Entendi'); return; }
+    await confirmar('Instalar app', 'No menu do navegador (tres pontos), toque em "Instalar app" ou "Adicionar a tela inicial".', 'Entendi');
+  };
 
   async function carregarConfig() {
     const j = await api('config');
