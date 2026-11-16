@@ -1,5 +1,5 @@
 // Cache simples da interface para abrir o app sem rede (os dados nunca sao cacheados).
-const CACHE = 'ptv-v4';
+const CACHE = 'ptv-v5';
 const ARQS = ['./', 'index.html', 'manifest.webmanifest', 'logo-mark.png', 'logo-word.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ARQS))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });

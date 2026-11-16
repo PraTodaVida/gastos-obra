@@ -113,6 +113,8 @@
   .kpi b{display:block;margin-top:6px;font:700 17px var(--fh);color:var(--tx);font-variant-numeric:tabular-nums;white-space:nowrap}
   .kpi div:first-child b{color:var(--neon);text-shadow:0 0 14px rgba(0,229,255,.45)}
   .kpi b.alert{color:var(--warn)}
+  .kpi1{grid-template-columns:1fr}
+  .kpi1 b{font-size:24px}
   .lista{margin-top:6px}
   .item{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid rgba(0,229,255,.08)}
   .item:last-child{border-bottom:0}
@@ -130,10 +132,11 @@
   .linhas{margin-top:8px}
   .linhas div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,229,255,.08);font-size:13.5px}
   .linhas div:last-child{border-bottom:0}
-  .linhas span{color:var(--mut)} .linhas b{font:600 13.5px var(--fh);font-variant-numeric:tabular-nums}
+  .linhas span{color:var(--mut)} .linhas b{font:600 13.5px var(--fh);font-variant-numeric:tabular-nums;white-space:nowrap}
   .pos{color:var(--ok)!important} .neg{color:var(--err)!important} .wrn{color:var(--warn)!important}
   .aviso{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,176,32,.35);background:rgba(255,176,32,.07);color:#ffe0a3;font-size:12px;line-height:1.45}
   .busca{margin-top:6px}
+  .rodape{text-align:center;color:#5d7090;font-size:11.5px;letter-spacing:.03em;margin:4px 8px 10px;line-height:1.5}
   .item a{color:var(--neon);font-size:11px;text-decoration:none;border:1px solid var(--bd2);border-radius:6px;padding:2px 6px;margin-left:6px}
   .cnt{float:right;color:var(--mut);font:600 11px var(--fh);letter-spacing:.1em}
   /* ---------- toast / fila ---------- */
@@ -255,16 +258,13 @@
   <section id="t-res" class="tab">
     <div class="card">
       <div class="ttl">Painel</div>
-      <div class="kpi">
+      <div class="kpi kpi1">
         <div><span>Custo da obra</span><b id="k-custo">--</b></div>
-        <div><span>Qtd</span><b id="k-qtd">--</b></div>
-        <div><span>Sem categ.</span><b id="k-semcat">--</b></div>
       </div>
       <div class="kpi2">
         <div><span>Lancamentos</span><b id="k-total">--</b></div>
         <div><span>Recorrentes pagos</span><b id="k-rec">--</b></div>
       </div>
-      <p class="hint" id="k-prov-txt">Custo da obra = lancamentos (sem provisoes) + recorrentes pagos.</p>
       <button class="ghost" id="b-atualizar" style="margin-top:12px">Atualizar</button>
     </div>
 
@@ -283,7 +283,7 @@
         <div><span>Valor de mercado</span><b id="m-valor">--</b></div>
         <div><span>Lucro no valor de mercado</span><b id="m-lucro">--</b></div>
         <div><span>Margem no valor de mercado</span><b id="m-margem">--</b></div>
-        <div><span>Diferenca para a margem alvo</span><b id="m-dif">--</b></div>
+        <div><span>Diferenca p/ margem alvo</span><b id="m-dif">--</b></div>
       </div>
     </div>
 
@@ -292,6 +292,7 @@
       <input class="busca" id="l-busca" placeholder="Buscar item, categoria ou ID..." autocomplete="off">
       <div class="lista" id="lst-ult"><div class="vazio">Sem dados.</div></div>
     </div>
+    <p class="rodape">Previsao sem impostos sobre a venda. Valores atualizados a cada lancamento.</p>
   </section>
 </main>
 
@@ -564,11 +565,6 @@
     $('#k-custo').textContent = brl(custo);
     $('#k-total').textContent = brl(r.totalLancamentos);
     $('#k-rec').textContent = brl(r.recorrentesPagos || 0);
-    $('#k-qtd').textContent = r.qtdLancamentos;
-    $('#k-semcat').textContent = r.semCategoria;
-    $('#k-semcat').classList.toggle('alert', r.semCategoria > 0);
-    $('#k-prov-txt').textContent = 'Custo da obra = lancamentos (sem provisoes) + recorrentes pagos.' +
-      (r.provisoes ? ' Provisoes fora do custo: ' + brl(r.provisoes) + '.' : '');
 
     // previsao de venda: margem sobre o preco, comissao deduzida do preco
     const pv = r.previsao;
