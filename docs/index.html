@@ -136,6 +136,9 @@
   .pos{color:var(--ok)!important} .neg{color:var(--err)!important} .wrn{color:var(--warn)!important}
   .aviso{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,176,32,.35);background:rgba(255,176,32,.07);color:#ffe0a3;font-size:12px;line-height:1.45}
   .busca{margin-top:6px}
+  input.inl{width:3.6em;padding:0 2px 1px;margin:0 2px;border:0;border-bottom:1px dashed var(--neon);border-radius:0;background:transparent;
+    color:inherit;font:inherit;letter-spacing:inherit;text-align:right;box-shadow:none}
+  input.inl:focus{border-bottom:1px solid var(--neon);box-shadow:none;background:rgba(0,229,255,.08)}
   .rodape{text-align:center;color:#5d7090;font-size:11.5px;letter-spacing:.03em;margin:4px 8px 10px;line-height:1.5}
   .item a{color:var(--neon);font-size:11px;text-decoration:none;border:1px solid var(--bd2);border-radius:6px;padding:2px 6px;margin-left:6px}
   .cnt{float:right;color:var(--mut);font:600 11px var(--fh);letter-spacing:.1em}
@@ -275,15 +278,16 @@
     </div>
 
     <div class="card">
-      <div class="ttl" id="p-ttl">Previsao de venda</div>
+      <div class="ttl">Previsao de venda - margem <input class="inl" id="in-margem" inputmode="decimal" autocomplete="off" aria-label="Margem (%)">%</div>
       <div class="hint" style="margin:0">Preco de venda para a margem alvo</div>
       <div class="prev-preco" id="p-preco">--</div>
       <div class="linhas">
         <div><span>Custo da obra</span><b id="p-custo">--</b></div>
         <div><span id="p-com-l">Comissao</span><b id="p-com">--</b></div>
         <div><span>Lucro previsto</span><b class="pos" id="p-lucro">--</b></div>
-        <div><span>Lucro sobre o custo</span><b id="p-lsc">--</b></div>
+        <div><span>Lucro sobre o custo</span><b><input class="inl" id="in-lsc" inputmode="decimal" autocomplete="off" aria-label="Lucro sobre o custo (%)">%</b></div>
       </div>
+      <p class="hint" id="p-edit">Toque na margem ou no lucro sobre o custo para alterar. <a href="#" id="b-padrao" style="color:var(--neon);display:none">Voltar ao padrao</a></p>
       <div class="ttl" style="margin-top:16px">Comparativo: valor de mercado</div>
       <div class="linhas">
         <div><span>Valor de mercado</span><b id="m-valor">--</b></div>
@@ -568,7 +572,47 @@
   }
 
   const pct = (x) => (x * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
-  let todos = [];
+  let todos = [], ultimoResumo = null;
+  const LS_MARGEM = 'ptv_margem';
+  const num = (x, d = 1) => Number(x).toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const lerPct = (t) => { const v = parseValor(String(t).replace('%', '')); return isFinite(v) ? v / 100 : NaN; };
+  // margem m (sobre o preco), comissao c, lucro sobre custo k:  k = m / (1 - m - c)   e   m = k (1 - c) / (1 + k)
+  function margemAtual(pv) { const m = store.get(LS_MARGEM, null); return (typeof m === 'number' && m > 0 && m < 1 - pv.comissao) ? m : pv.margem; }
+  function renderPrev(editando) {
+    const r = ultimoResumo; if (!r || !r.previsao) return;
+    const pv = r.previsao, custo = r.custoBase ?? r.totalLancamentos, m = margemAtual(pv), c = pv.comissao;
+    const preco = custo / (1 - m - c), com = preco * c, lucro = preco - com - custo, k = m / (1 - m - c);
+    if (editando !== 'm') $('#in-margem').value = num(m * 100);
+    if (editando !== 'k') $('#in-lsc').value = num(k * 100);
+    $('#b-padrao').style.display = Math.abs(m - pv.margem) > 1e-9 ? '' : 'none';
+    $('#p-preco').textContent = brl(preco);
+    $('#p-custo').textContent = brl(custo);
+    $('#p-com-l').textContent = 'Comissao (' + pct(c) + ')';
+    $('#p-com').textContent = brl(com);
+    $('#p-lucro').textContent = brl(lucro);
+    const vm = pv.valorMercado, lm = vm - vm * c - custo, mm = vm ? lm / vm : 0;
+    $('#m-valor').textContent = brl(vm);
+    $('#m-lucro').textContent = brl(lm); $('#m-lucro').className = lm >= 0 ? 'pos' : 'neg';
+    $('#m-margem').textContent = pct(mm); $('#m-margem').className = mm >= m ? 'pos' : 'wrn';
+    const dif = preco - vm;
+    $('#m-dif').textContent = (dif > 0 ? 'faltam ' : 'sobram ') + brl(Math.abs(dif)); $('#m-dif').className = dif > 0 ? 'wrn' : 'pos';
+  }
+  function editarMargem(campo) {
+    const r = ultimoResumo; if (!r || !r.previsao) return;
+    const c = r.previsao.comissao, v = lerPct($(campo === 'm' ? '#in-margem' : '#in-lsc').value);
+    if (!(v > 0)) return;
+    const m = campo === 'm' ? v : v * (1 - c) / (1 + v);
+    if (!(m > 0 && m < 1 - c)) return;
+    store.set(LS_MARGEM, m); renderPrev(campo);
+  }
+  ['in-margem', 'in-lsc'].forEach((id) => {
+    const el = document.getElementById(id), campo = id === 'in-margem' ? 'm' : 'k';
+    el.addEventListener('input', () => editarMargem(campo));
+    el.addEventListener('focus', () => el.select());
+    el.addEventListener('blur', () => renderPrev());
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') el.blur(); });
+  });
+  $('#b-padrao').onclick = (e) => { e.preventDefault(); store.del(LS_MARGEM); renderPrev(); };
   function renderResumo(r) {
     if (!r) return;
     const custo = r.custoBase ?? r.totalLancamentos;
@@ -577,23 +621,8 @@
     $('#k-rec').textContent = brl(r.recorrentesPagos || 0);
 
     // previsao de venda: margem sobre o preco, comissao deduzida do preco
-    const pv = r.previsao;
-    if (pv) {
-      const preco = custo / (1 - pv.margem - pv.comissao), com = preco * pv.comissao, lucro = preco - com - custo;
-      $('#p-ttl').textContent = 'Previsao de venda - margem ' + pct(pv.margem);
-      $('#p-preco').textContent = brl(preco);
-      $('#p-custo').textContent = brl(custo);
-      $('#p-com-l').textContent = 'Comissao (' + pct(pv.comissao) + ')';
-      $('#p-com').textContent = brl(com);
-      $('#p-lucro').textContent = brl(lucro);
-      $('#p-lsc').textContent = custo ? pct(lucro / custo) : '--';
-      const vm = pv.valorMercado, lm = vm - vm * pv.comissao - custo, mm = vm ? lm / vm : 0;
-      $('#m-valor').textContent = brl(vm);
-      $('#m-lucro').textContent = brl(lm); $('#m-lucro').className = lm >= 0 ? 'pos' : 'neg';
-      $('#m-margem').textContent = pct(mm); $('#m-margem').className = mm >= pv.margem ? 'pos' : 'wrn';
-      const dif = preco - vm;
-      $('#m-dif').textContent = (dif > 0 ? 'faltam ' : 'sobram ') + brl(Math.abs(dif)); $('#m-dif').className = dif > 0 ? 'wrn' : 'pos';
-    }
+    ultimoResumo = r;
+    renderPrev();
     todos = r.lancamentos || r.ultimos || [];
     renderLista();
   }
