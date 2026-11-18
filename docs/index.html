@@ -7,7 +7,8 @@
 <meta name="color-scheme" content="dark">
 <title>Pra Toda Vida</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="favicon.png" type="image/png">
+<link rel="icon" href="favicon-32.png?v=10" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon.png?v=10" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -136,6 +137,16 @@
   .pos{color:var(--ok)!important} .neg{color:var(--err)!important} .wrn{color:var(--warn)!important}
   .aviso{margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,176,32,.35);background:rgba(255,176,32,.07);color:#ffe0a3;font-size:12px;line-height:1.45}
   .busca{margin-top:6px}
+  body.planta main{max-width:none;padding:0}
+  .planta-box{position:relative;height:calc(100dvh - 64px - 92px - env(safe-area-inset-top) - env(safe-area-inset-bottom));min-height:420px;margin:0 0 6px}
+  #fr-planta{width:100%;height:100%;border:0;background:#fff;display:block}
+  .planta-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:var(--mut);font-size:14px;background:var(--bg);pointer-events:none}
+  .planta-msg.oculto{display:none}
+  select.sel-bitola{padding-right:26px;background-position:calc(100% - 14px) 52%,calc(100% - 9px) 52%}
+  .res{margin-top:16px;padding:12px 14px;border-radius:12px;background:rgba(0,229,255,.06);border:1px solid var(--bd2)}
+  .res span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .res .prev-preco{margin:4px 0 0;font-size:26px}
+  .linhas b small{color:var(--mut);font-family:var(--fb);font-weight:500;font-size:11.5px}
   input.inl{width:3.6em;padding:0 2px 1px;margin:0 2px;border:0;border-bottom:1px dashed var(--neon);border-radius:0;background:transparent;
     color:inherit;font:inherit;letter-spacing:inherit;text-align:right;box-shadow:none}
   input.inl:focus{border-bottom:1px solid var(--neon);box-shadow:none;background:rgba(0,229,255,.08)}
@@ -304,6 +315,232 @@
     </div>
     <p class="rodape">Previsao sem impostos sobre a venda. Valores atualizados a cada lancamento.</p>
   </section>
+  <!-- CALCULADORA -->
+  <section id="t-calc" class="tab">
+    <div class="card">
+      <div class="ttl">Calculadora de materiais</div>
+      <label>Tipo de calculo</label>
+      <select id="sel-calc">
+        <option value="blocos">Calculo de blocos</option>
+        <option value="reboco">Calculo de reboco</option>
+        <option value="baldrame">Calculo de baldrame</option>
+        <option value="assent">Argamassa para levante de blocos</option>
+        <option value="ferro">Calculo de ferragens</option>
+        <option value="laje">Calculo de laje</option>
+      </select>
+    </div>
+
+    <!-- BLOCOS -->
+    <div class="card cpan" data-p="blocos">
+      <div class="ttl">Blocos</div>
+      <div class="row">
+        <div><label>Perimetro (m)</label><input class="cin" data-k="per" inputmode="decimal" placeholder="0,00"></div>
+        <div><label>Altura parede (m)</label><input class="cin" data-k="alt" inputmode="decimal" placeholder="0,00"></div>
+      </div>
+      <label>Descontar vaos - portas e janelas (m2)</label>
+      <input class="cin" data-k="vaos" inputmode="decimal" placeholder="0,00">
+      <label>Bloco</label>
+      <select class="cin sel-bloco" data-k="bloco"></select>
+      <div class="hint bloco-info"></div>
+      <div class="row bloco-custom" style="display:none">
+        <div><label>Larg. (cm)</label><input class="cin" data-k="bl" inputmode="decimal"></div>
+        <div><label>Alt. (cm)</label><input class="cin" data-k="bh" inputmode="decimal"></div>
+        <div><label>Comp. (cm)</label><input class="cin" data-k="bc" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Junta (cm)</label><input class="cin" data-k="junta" inputmode="decimal"></div>
+        <div><label>Perda blocos (%)</label><input class="cin" data-k="perdaB" inputmode="decimal"></div>
+      </div>
+      <div class="res"><span>Quantidade de blocos</span><b class="prev-preco" id="r-blocos">--</b></div>
+      <div class="linhas">
+        <div><span>Area de parede (liquida)</span><b id="r-area">--</b></div>
+        <div><span>Blocos por m2</span><b id="r-bm2">--</b></div>
+        <div><span>Blocos sem perda</span><b id="r-bsp">--</b></div>
+      </div>
+    </div>
+
+    <!-- REBOCO -->
+    <div class="card cpan" data-p="reboco">
+      <div class="ttl">Reboco</div>
+      <div class="row">
+        <div><label>Area (m2)</label><input class="cin" data-k="rarea" inputmode="decimal" placeholder="0,00"></div>
+        <div><label>Espessura (cm)</label><input class="cin" data-k="resp" inputmode="decimal"></div>
+      </div>
+      <a href="#" class="hint lnk" data-usar="rarea">Usar area das paredes do calculo de blocos (2 faces)</a>
+      <div class="res"><span>Cimento</span><b class="prev-preco" id="r-rcim">--</b></div>
+      <div class="linhas">
+        <div><span>Areia</span><b id="r-rare">--</b></div>
+        <div><span>Volume de argamassa</span><b id="r-rvol">--</b></div>
+      </div>
+    </div>
+
+    <!-- BALDRAME -->
+    <div class="card cpan" data-p="baldrame">
+      <div class="ttl">Baldrame (viga de fundacao)</div>
+      <label>Comprimento total (m)</label>
+      <input class="cin" data-k="bdc" inputmode="decimal" placeholder="0,00">
+      <a href="#" class="hint lnk" data-usar="bdc">Usar perimetro do calculo de blocos</a>
+      <div class="row">
+        <div><label>Largura (cm)</label><input class="cin" data-k="bdl" inputmode="decimal" placeholder="ex.: 15"></div>
+        <div><label>Altura (cm)</label><input class="cin" data-k="bdh" inputmode="decimal" placeholder="ex.: 30"></div>
+      </div>
+      <div class="res"><span>Concreto</span><b class="prev-preco" id="r-bdvol">--</b></div>
+      <div class="linhas">
+        <div><span>Cimento</span><b id="r-bdcim">--</b></div>
+        <div><span>Areia</span><b id="r-bdare">--</b></div>
+        <div><span>Brita</span><b id="r-bdbri">--</b></div>
+      </div>
+      <p class="hint">Ferragem do baldrame: use "Calculo de ferragens" e toque em "Usar medidas do baldrame".</p>
+    </div>
+
+    <!-- ARGAMASSA DE ASSENTAMENTO -->
+    <div class="card cpan" data-p="assent">
+      <div class="ttl">Argamassa para levante de blocos</div>
+      <label>Area de parede (m2)</label>
+      <input class="cin" data-k="aarea" inputmode="decimal" placeholder="0,00">
+      <a href="#" class="hint lnk" data-usar="aarea">Usar area liquida do calculo de blocos</a>
+      <label>Bloco</label>
+      <select class="cin sel-bloco" data-k="bloco"></select>
+      <div class="hint bloco-info"></div>
+      <div class="row bloco-custom" style="display:none">
+        <div><label>Larg. (cm)</label><input class="cin" data-k="bl" inputmode="decimal"></div>
+        <div><label>Alt. (cm)</label><input class="cin" data-k="bh" inputmode="decimal"></div>
+        <div><label>Comp. (cm)</label><input class="cin" data-k="bc" inputmode="decimal"></div>
+      </div>
+      <label>Junta (cm)</label>
+      <input class="cin" data-k="junta" inputmode="decimal">
+      <div class="res"><span>Cimento</span><b class="prev-preco" id="r-acim">--</b></div>
+      <div class="linhas">
+        <div><span>Areia</span><b id="r-aare">--</b></div>
+        <div><span>Volume de argamassa</span><b id="r-avol">--</b></div>
+      </div>
+      <p class="hint">Considera a argamassa das juntas (horizontal e vertical) na espessura do bloco. Nao inclui argamassa que cai dentro dos furos.</p>
+    </div>
+
+    <!-- FERRAGENS -->
+    <div class="card cpan" data-p="ferro">
+      <div class="ttl">Ferragens (vigas, baldrame, pilares)</div>
+      <a href="#" class="hint lnk" id="b-usar-bald">Usar medidas do baldrame</a>
+      <div class="row">
+        <div><label>Compr. peca (m)</label><input class="cin" data-k="fc" inputmode="decimal" placeholder="0,00"></div>
+        <div><label>Qtd. de pecas</label><input class="cin" data-k="fq" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Larg. (cm)</label><input class="cin" data-k="fb" inputmode="decimal" placeholder="ex.: 15"></div>
+        <div><label>Alt. (cm)</label><input class="cin" data-k="fh" inputmode="decimal" placeholder="ex.: 30"></div>
+        <div><label>Cobrim.</label><input class="cin" data-k="fcob" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Barras (qtd)</label><input class="cin" data-k="fnl" inputmode="decimal"></div>
+        <div><label>Bitola barras</label><select class="cin sel-bitola" data-k="fbl"></select></div>
+      </div>
+      <div class="row">
+        <div><label>Estribo</label><select class="cin sel-bitola" data-k="fbe"></select></div>
+        <div><label>Espac. cm</label><input class="cin" data-k="fesp" inputmode="decimal"></div>
+        <div><label>Gancho cm</label><input class="cin" data-k="fgan" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Perda (%)</label><input class="cin" data-k="fperda" inputmode="decimal"></div>
+        <div><label>Barra comercial (m)</label><input class="cin" data-k="fbarra" inputmode="decimal"></div>
+      </div>
+      <div class="res"><span>Aco total</span><b class="prev-preco" id="r-fkg">--</b></div>
+      <div class="ttl" style="margin-top:14px">Barras longitudinais</div>
+      <div class="linhas">
+        <div><span>Metragem</span><b id="r-flm">--</b></div>
+        <div><span>Barras comerciais</span><b id="r-flb">--</b></div>
+        <div><span>Peso</span><b id="r-flkg">--</b></div>
+      </div>
+      <div class="ttl" style="margin-top:14px">Estribos</div>
+      <div class="linhas">
+        <div><span>Quantidade</span><b id="r-feq">--</b></div>
+        <div><span>Comprimento de cada</span><b id="r-fec">--</b></div>
+        <div><span>Barras comerciais</span><b id="r-feb">--</b></div>
+        <div><span>Peso</span><b id="r-fekg">--</b></div>
+      </div>
+      <p class="hint">Peso pela massa nominal do aco (0,00617 x bitola2 kg/m). Quantidade e bitola das barras sao definidas pelo projeto estrutural.</p>
+    </div>
+
+    <!-- LAJE -->
+    <div class="card cpan" data-p="laje">
+      <div class="ttl">Laje</div>
+      <label>Tipo de laje</label>
+      <select class="cin" data-k="ltipo">
+        <option value="macica">Macica (concreto armado)</option>
+        <option value="trelicada">Trelicada / pre-moldada</option>
+      </select>
+      <div class="row">
+        <div><label>Comprimento (m)</label><input class="cin" data-k="lc" inputmode="decimal" placeholder="0,00"></div>
+        <div><label>Largura (m)</label><input class="cin" data-k="ll" inputmode="decimal" placeholder="0,00"></div>
+      </div>
+      <div class="lj-mac">
+        <label>Espessura (cm)</label>
+        <input class="cin" data-k="lesp" inputmode="decimal" placeholder="ex.: 10">
+      </div>
+      <div class="lj-tre">
+        <p class="hint">Vigotas apoiadas no sentido da LARGURA (menor vao), distribuidas ao longo do comprimento.</p>
+        <div class="row">
+          <div><label>Intereixo (cm)</label><input class="cin" data-k="lint" inputmode="decimal"></div>
+          <div><label>Apoio vigota (cm)</label><input class="cin" data-k="lapo" inputmode="decimal"></div>
+        </div>
+        <div class="row">
+          <div><label>Enchim. (cm)</label><input class="cin" data-k="lench" inputmode="decimal"></div>
+          <div><label>Concreto (m3/m2)</label><input class="cin" data-k="lcons" inputmode="decimal" placeholder="fabricante"></div>
+        </div>
+      </div>
+      <div class="res"><span>Concreto</span><b class="prev-preco" id="r-lvol">--</b></div>
+      <div class="linhas">
+        <div><span>Area da laje</span><b id="r-larea">--</b></div>
+        <div><span>Cimento</span><b id="r-lcim">--</b></div>
+        <div><span>Areia</span><b id="r-lare">--</b></div>
+        <div><span>Brita</span><b id="r-lbri">--</b></div>
+        <div class="lj-tre"><span>Vigotas</span><b id="r-lvig">--</b></div>
+        <div class="lj-tre"><span>Enchimento (lajota/EPS)</span><b id="r-lenc">--</b></div>
+      </div>
+      <p class="hint lj-tre">Concreto (m3/m2): consumo da tabela do fabricante da laje (capa + nervuras). Sem esse dado o concreto nao e calculado.</p>
+    </div>
+
+    <!-- PARAMETROS -->
+    <div class="card cpan" data-p="reboco assent">
+      <div class="ttl">Traco da argamassa</div>
+      <div class="row">
+        <div><label>Cimento (sacos)</label><input class="cin" data-k="tc" inputmode="decimal"></div>
+        <div><label>Areia (latas)</label><input class="cin" data-k="ta" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Areia / m3 argamassa</label><input class="cin" data-k="fator" inputmode="decimal"></div>
+        <div><label>Perda argamassa (%)</label><input class="cin" data-k="perdaA" inputmode="decimal"></div>
+      </div>
+      <p class="hint">Areia / m3 argamassa: m3 de areia solta por m3 de argamassa pronta (referencia usual 1,15). Ajuste com o historico da obra.</p>
+    </div>
+    <div class="card cpan" data-p="baldrame laje">
+      <div class="ttl">Traco do concreto</div>
+      <div class="row">
+        <div><label>Cimento (sacos)</label><input class="cin" data-k="cc" inputmode="decimal"></div>
+        <div><label>Areia (latas)</label><input class="cin" data-k="ca" inputmode="decimal"></div>
+        <div><label>Brita (latas)</label><input class="cin" data-k="cb" inputmode="decimal"></div>
+      </div>
+      <div class="row">
+        <div><label>Fator vol. seco</label><input class="cin" data-k="cfat" inputmode="decimal"></div>
+        <div><label>Perda concreto (%)</label><input class="cin" data-k="perdaC" inputmode="decimal"></div>
+      </div>
+      <p class="hint">Padrao 1 saco : 4 latas : 6 latas (aprox. 1:2:3 em volume). Fator vol. seco: volume de materiais secos por m3 de concreto (referencia usual 1,52). Concreto estrutural deve seguir o fck do projeto.</p>
+    </div>
+    <div class="card cpan" data-p="reboco assent baldrame laje">
+      <div class="ttl">Medidas</div>
+      <div class="row">
+        <div><label>Lata (litros)</label><input class="cin" data-k="lata" inputmode="decimal"></div>
+        <div><label>Saco cimento (kg)</label><input class="cin" data-k="saco" inputmode="decimal"></div>
+      </div>
+    </div>
+    <button class="ghost" id="b-calc-padrao" style="margin-bottom:14px">Restaurar padroes</button>
+  </section>
+  <!-- PLANTA (calculadora do site Pra Toda Vida) -->
+  <section id="t-planta" class="tab">
+    <div class="planta-box">
+      <iframe id="fr-planta" title="Calculadora de planta e maquete 3D" allow="fullscreen" loading="lazy"></iframe>
+      <div class="planta-msg" id="planta-msg">Carregando calculadora de planta...</div>
+    </div>
+  </section>
 </main>
 
 <nav>
@@ -318,6 +555,14 @@
   <button data-t="t-res">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
     Resumo
+  </button>
+  <button data-t="t-calc">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg>
+    Calc
+  </button>
+  <button data-t="t-planta">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 12h7v9M14 3v7h7"/></svg>
+    Planta
   </button>
 </nav>
 
@@ -565,6 +810,7 @@
       box.append(l, i);
     });
     $('#sub').textContent = meta?.planilha ? meta.planilha : 'Gastos da obra';
+    if (meta?.blocos?.length && typeof montarBlocos === 'function') { try { montarBlocos(meta.blocos); calcular(); } catch (e) {} }
     const bp = $('#b-pasta');
     if (/^https:\/\/drive\.google\.com\//.test(meta?.pastaUrl || '')) { bp.href = meta.pastaUrl; bp.style.display = ''; } else bp.style.display = 'none';
     const bd = $('#b-docs');
@@ -672,12 +918,198 @@
   }
   $('#b-atualizar').onclick = () => carregarResumo(true);
 
+  // ---------- calculadora ----------
+  const BLOCOS_PADRAO = [
+    ['Ceramico vedacao','6 furos 9x14x19',9,14,19],['Ceramico vedacao','6 furos 9x14x24',9,14,24],['Ceramico vedacao','9x14x29',9,14,29],
+    ['Ceramico vedacao','6 furos 11,5x14x24',11.5,14,24],['Ceramico vedacao','8 furos 9x19x19',9,19,19],['Ceramico vedacao','9x19x29',9,19,29],
+    ['Ceramico vedacao','11,5x19x29',11.5,19,29],['Ceramico vedacao','14x19x29',14,19,29],['Ceramico estrutural','14x19x29',14,19,29],
+    ['Concreto','9x14x39',9,14,39],['Concreto','9x19x39',9,19,39],['Concreto','14x19x39',14,19,39],['Concreto','19x19x39',19,19,39],
+    ['Tijolo macico','5x10x20',5,10,20],['Concreto celular','10x30x60',10,30,60],['Concreto celular','15x30x60',15,30,60],
+  ].map(([tipo, nome, l, h, c]) => ({ tipo, nome, l, h, c, obs: 'Medida nominal. Confira com o fornecedor.' }));
+  const BITOLAS = [4.2, 5.0, 6.0, 6.3, 8.0, 10.0, 12.5, 16.0, 20.0];
+  const CALC_PADRAO = {
+    tipo: 'blocos',
+    per: '', alt: '', vaos: '0', bloco: '2', bl: '', bh: '', bc: '', junta: '1', perdaB: '5',
+    rarea: '', resp: '2', aarea: '',
+    bdc: '', bdl: '', bdh: '',
+    fc: '', fq: '1', fb: '', fh: '', fcob: '2,5', fnl: '4', fbl: '10', fbe: '5', fesp: '15', fgan: '10', fperda: '10', fbarra: '12',
+    ltipo: 'macica', lc: '', ll: '', lesp: '', lint: '42', lapo: '10', lench: '20', lcons: '',
+    tc: '1', ta: '8', fator: '1,15', perdaA: '10',
+    cc: '1', ca: '4', cb: '6', cfat: '1,52', perdaC: '5',
+    lata: '18', saco: '50',
+  };
+  const PARAMS = ['junta', 'perdaB', 'resp', 'fcob', 'fgan', 'fperda', 'fbarra', 'fesp', 'lint', 'lapo', 'lench',
+                  'tc', 'ta', 'fator', 'perdaA', 'cc', 'ca', 'cb', 'cfat', 'perdaC', 'lata', 'saco'];
+  const LS_CALC = 'ptv_calc';
+  let blocos = BLOCOS_PADRAO, calc = Object.assign({}, CALC_PADRAO, store.get(LS_CALC, {}));
+  const nv = (k) => { const v = parseValor(calc[k]); return isFinite(v) ? v : 0; };
+  const fmt = (x, d = 2) => Number(x).toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const inteiro = (x) => Math.ceil(x - 1e-9).toLocaleString('pt-BR');
+  const setT = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  const setH = (id, h) => { const el = document.getElementById(id); if (el) el.innerHTML = h; };
+  const salvarCalc = () => store.set(LS_CALC, calc);
+
+  function montarBlocos(lista) {
+    if (Array.isArray(lista) && lista.length) blocos = lista;
+    if (calc.bloco !== 'custom' && !blocos[Number(calc.bloco)]) calc.bloco = '0';
+    $$('.sel-bloco').forEach((sel) => {
+      sel.innerHTML = '';
+      const grupos = {};
+      blocos.forEach((b, i) => { (grupos[b.tipo] = grupos[b.tipo] || []).push([b, i]); });
+      Object.keys(grupos).forEach((g) => {
+        const og = document.createElement('optgroup'); og.label = g;
+        grupos[g].forEach(([b, i]) => { const o = document.createElement('option'); o.value = String(i); o.textContent = b.tipo + ' ' + b.nome; og.appendChild(o); });
+        sel.appendChild(og);
+      });
+      const oc = document.createElement('option'); oc.value = 'custom'; oc.textContent = 'Personalizado (digitar medidas)'; sel.appendChild(oc);
+      sel.value = calc.bloco;
+    });
+  }
+  $$('.sel-bitola').forEach((sel) => BITOLAS.forEach((d) => {
+    const o = document.createElement('option'); o.value = String(d); o.textContent = fmt(d, 1) + ' mm'; sel.appendChild(o);
+  }));
+
+  function blocoAtual() {
+    const custom = calc.bloco === 'custom';
+    return custom ? { l: nv('bl'), h: nv('bh'), c: nv('bc'), obs: '', custom } : Object.assign({ custom }, blocos[Number(calc.bloco)]);
+  }
+  // argamassa pronta (m3) -> areia e cimento pelo traco (sacos : latas)
+  function argamassa(v) {
+    const vp = v * (1 + nv('perdaA') / 100), areiaM3 = vp * nv('fator'), lataM3 = nv('lata') / 1000;
+    const latas = lataM3 > 0 ? areiaM3 / lataM3 : 0, sacos = nv('ta') > 0 ? latas * nv('tc') / nv('ta') : 0;
+    return { sacos: inteiro(sacos) + ' sacos <small>(' + fmt(sacos * nv('saco'), 0) + ' kg)</small>',
+             are: inteiro(latas) + ' latas <small>(' + fmt(areiaM3, 2) + ' m3)</small>' };
+  }
+  // concreto (m3) -> cimento, areia e brita pelo traco (sacos : latas : latas). Saco solto ~1,4 kg/L.
+  function concreto(v) {
+    const vp = v * (1 + nv('perdaC') / 100), lata = nv('lata'), saco = nv('saco');
+    const seco = nv('cc') * saco / 1.4 + (nv('ca') + nv('cb')) * lata, umido = nv('cfat') > 0 ? seco / nv('cfat') : 0;
+    const tracos = umido > 0 ? vp * 1000 / umido : 0;
+    const sacos = tracos * nv('cc'), la = tracos * nv('ca'), lb = tracos * nv('cb');
+    return { vp, sacos: inteiro(sacos) + ' sacos <small>(' + fmt(sacos * saco, 0) + ' kg)</small>',
+             are: inteiro(la) + ' latas <small>(' + fmt(la * lata / 1000, 2) + ' m3)</small>',
+             bri: inteiro(lb) + ' latas <small>(' + fmt(lb * lata / 1000, 2) + ' m3)</small>' };
+  }
+  const kgm = (d) => 0.006165 * d * d;
+
+  function calcular() {
+    // painel visivel
+    $$('.cpan').forEach((el) => { el.style.display = el.dataset.p.split(' ').includes(calc.tipo) ? '' : 'none'; });
+    $('#sel-calc').value = calc.tipo;
+    // ----- blocos -----
+    const b = blocoAtual();
+    $$('.bloco-custom').forEach((el) => { el.style.display = b.custom ? '' : 'none'; });
+    $$('.bloco-info').forEach((el) => { el.textContent = b && !b.custom && b.c ? 'Largura ' + fmt(b.l, 1) + ' x altura ' + fmt(b.h, 1) + ' x comprimento ' + fmt(b.c, 1) + ' cm. ' + (b.obs || '') : ''; });
+    const j = nv('junta') / 100, areaB = Math.max(0, nv('per') * nv('alt') - nv('vaos'));
+    const okBl = b && b.h > 0 && b.c > 0;
+    const bm2 = okBl ? 1 / (((b.c / 100) + j) * ((b.h / 100) + j)) : 0;
+    const okB = okBl && areaB > 0, bsp = areaB * bm2;
+    setT('r-blocos', okB ? inteiro(bsp * (1 + nv('perdaB') / 100)) + ' un' : '--');
+    setT('r-area', areaB > 0 ? fmt(areaB) + ' m2' : '--');
+    setT('r-bm2', okBl ? fmt(bm2) : '--');
+    setT('r-bsp', okB ? inteiro(bsp) + ' un' : '--');
+    // ----- reboco -----
+    const vReb = nv('rarea') * nv('resp') / 100, mR = argamassa(vReb);
+    setH('r-rcim', vReb > 0 ? mR.sacos : '--'); setH('r-rare', vReb > 0 ? mR.are : '--');
+    setT('r-rvol', vReb > 0 ? fmt(vReb, 3) + ' m3' : '--');
+    // ----- assentamento -----
+    const aA = nv('aarea'), vAss = okBl && aA > 0 ? aA * Math.max(0, 1 - bm2 * (b.c / 100) * (b.h / 100)) * (b.l / 100) : 0, mA = argamassa(vAss);
+    setH('r-acim', vAss > 0 ? mA.sacos : '--'); setH('r-aare', vAss > 0 ? mA.are : '--');
+    setT('r-avol', vAss > 0 ? fmt(vAss, 3) + ' m3' : '--');
+    // ----- baldrame -----
+    const vBd = nv('bdc') * nv('bdl') / 100 * nv('bdh') / 100, cB = concreto(vBd);
+    setT('r-bdvol', vBd > 0 ? fmt(cB.vp, 2) + ' m3' : '--');
+    setH('r-bdcim', vBd > 0 ? cB.sacos : '--'); setH('r-bdare', vBd > 0 ? cB.are : '--'); setH('r-bdbri', vBd > 0 ? cB.bri : '--');
+    // ----- ferragens -----
+    const L = nv('fc'), q = nv('fq'), perdaF = 1 + nv('fperda') / 100, barra = nv('fbarra');
+    const dl = nv('fbl'), de = nv('fbe'), cob = nv('fcob');
+    const okF = L > 0 && q > 0;
+    const mL = okF ? L * q * nv('fnl') * perdaF : 0;
+    const eb = Math.max(0, nv('fb') - 2 * cob), eh = Math.max(0, nv('fh') - 2 * cob);
+    const ecm = eb > 0 && eh > 0 ? 2 * (eb + eh) + nv('fgan') : 0;
+    const nE = okF && nv('fesp') > 0 && ecm > 0 ? (Math.floor((L * 100) / nv('fesp')) + 1) * q : 0;
+    const mE = nE * ecm / 100 * perdaF;
+    const kL = mL * kgm(dl), kE = mE * kgm(de);
+    setT('r-fkg', okF ? fmt(kL + kE, 1) + ' kg' : '--');
+    setT('r-flm', okF ? fmt(mL, 1) + ' m' : '--');
+    setH('r-flb', okF && barra > 0 ? inteiro(mL / barra) + ' barras <small>de ' + fmt(barra, 0) + ' m, ' + fmt(dl, 1) + ' mm</small>' : '--');
+    setT('r-flkg', okF ? fmt(kL, 1) + ' kg' : '--');
+    setT('r-feq', nE ? inteiro(nE) + ' un' : '--');
+    setT('r-fec', ecm ? fmt(ecm, 0) + ' cm' : '--');
+    setH('r-feb', nE && barra > 0 ? inteiro(mE / barra) + ' barras <small>de ' + fmt(barra, 0) + ' m, ' + fmt(de, 1) + ' mm</small>' : '--');
+    setT('r-fekg', nE ? fmt(kE, 1) + ' kg' : '--');
+    // ----- laje -----
+    const tre = calc.ltipo === 'trelicada';
+    $$('.lj-tre').forEach((el) => { el.style.display = tre ? '' : 'none'; });
+    $$('.lj-mac').forEach((el) => { el.style.display = tre ? 'none' : ''; });
+    const lc = nv('lc'), ll = nv('ll'), aL = lc * ll;
+    const vL = tre ? aL * nv('lcons') : aL * nv('lesp') / 100, cL = concreto(vL);
+    setT('r-larea', aL > 0 ? fmt(aL) + ' m2' : '--');
+    setT('r-lvol', vL > 0 ? fmt(cL.vp, 2) + ' m3' : (tre && aL > 0 ? 'informe m3/m2' : '--'));
+    setH('r-lcim', vL > 0 ? cL.sacos : '--'); setH('r-lare', vL > 0 ? cL.are : '--'); setH('r-lbri', vL > 0 ? cL.bri : '--');
+    const int = nv('lint') / 100, nVig = tre && aL > 0 && int > 0 ? Math.ceil(lc / int - 1e-9) : 0, cVig = ll + 2 * nv('lapo') / 100;
+    setH('r-lvig', nVig ? nVig + ' un <small>de ' + fmt(cVig, 2) + ' m (' + fmt(nVig * cVig, 1) + ' m)</small>' : '--');
+    const ench = nv('lench') / 100;
+    setT('r-lenc', tre && aL > 0 && int > 0 && ench > 0 ? inteiro(aL / (int * ench)) + ' un' : '--');
+  }
+  function preencherCalc() {
+    $$('.cin').forEach((el) => { if (el.tagName === 'SELECT') { if (!el.classList.contains('sel-bloco')) el.value = calc[el.dataset.k] ?? ''; } else el.value = calc[el.dataset.k] ?? ''; });
+    $$('.sel-bloco').forEach((s) => { s.value = calc.bloco; });
+  }
+  $$('.cin').forEach((el) => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+    calc[el.dataset.k] = el.value; salvarCalc();
+    if (el.classList.contains('sel-bloco')) $$('.sel-bloco').forEach((s) => { s.value = el.value; });
+    if (el.tagName !== 'SELECT' && ['junta', 'bl', 'bh', 'bc'].includes(el.dataset.k)) $$('.cin[data-k="' + el.dataset.k + '"]').forEach((o) => { if (o !== el) o.value = el.value; });
+    calcular();
+  }));
+  $('#sel-calc').addEventListener('change', (e) => { calc.tipo = e.target.value; salvarCalc(); calcular(); window.scrollTo({ top: 0 }); });
+  $$('.lnk[data-usar]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const areaB = Math.max(0, nv('per') * nv('alt') - nv('vaos')), k = a.dataset.usar;
+    const v = k === 'rarea' ? areaB * 2 : k === 'aarea' ? areaB : nv('per');
+    if (!(v > 0)) return msg('Preencha perimetro e altura em "Calculo de blocos".', 'warn');
+    calc[k] = fmt(v); salvarCalc(); preencherCalc(); calcular();
+  }));
+  $('#b-usar-bald').onclick = (e) => {
+    e.preventDefault();
+    if (!(nv('bdc') > 0 && nv('bdl') > 0 && nv('bdh') > 0)) return msg('Preencha comprimento, largura e altura em "Calculo de baldrame".', 'warn');
+    calc.fc = calc.bdc; calc.fq = '1'; calc.fb = calc.bdl; calc.fh = calc.bdh; salvarCalc(); preencherCalc(); calcular();
+  };
+  $('#b-calc-padrao').onclick = async () => {
+    if (!await confirmar('Restaurar padroes', 'Volta juntas, perdas, tracos e parametros aos valores padrao. Medidas digitadas sao mantidas.', 'Restaurar')) return;
+    PARAMS.forEach((k) => { calc[k] = CALC_PADRAO[k]; }); salvarCalc(); preencherCalc(); calcular();
+  };
+  montarBlocos(store.get(LS.meta, null)?.blocos); preencherCalc(); calcular();
+
+  // ---------- planta (pagina do site no mesmo dominio, sem cabecalho/rodape) ----------
+  const PLANTA_URL = '/pratodavida/#calculadora';
+  let plantaCarregada = false;
+  function abrirPlanta() {
+    const fr = $('#fr-planta'), m = $('#planta-msg');
+    if (!navigator.onLine && !plantaCarregada) { m.textContent = 'Sem conexao. A calculadora de planta precisa de internet.'; m.classList.remove('oculto'); return; }
+    if (plantaCarregada) return;
+    plantaCarregada = true;
+    fr.addEventListener('load', () => {
+      try {
+        const d = fr.contentDocument;
+        const st = d.createElement('style');
+        st.textContent = 'header.top,footer.rodape,.flut{display:none!important} body{padding-top:0!important}';
+        d.head.appendChild(st);
+        if (d.location.hash !== '#calculadora') d.location.hash = '#calculadora';
+      } catch (e) { /* outro dominio: mostra a pagina inteira */ }
+      m.classList.add('oculto');
+    });
+    fr.src = PLANTA_URL;
+  }
+
   // ---------- navegacao ----------
   $$('nav button').forEach((b) => b.onclick = () => {
     $$('nav button').forEach((x) => x.classList.toggle('on', x === b));
     $$('.tab').forEach((t) => t.classList.toggle('on', t.id === b.dataset.t));
     window.scrollTo({ top: 0 });
     if (b.dataset.t === 't-res') carregarResumo();
+    document.body.classList.toggle('planta', b.dataset.t === 't-planta');
+    if (b.dataset.t === 't-planta') abrirPlanta();
   });
 
   // ---------- inicio ----------
